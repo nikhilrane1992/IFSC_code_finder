@@ -20,9 +20,13 @@ from django.conf import settings
 from django.conf.urls.static import static
 from .views import(
     landing_page,
+    serve_bank_names,
+    send_branch_ifsc_code
     )
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$',landing_page),
+    url(r'^serve_bank_names/$',serve_bank_names),
+    url(r'^get_branch_ifsc_code/$',send_branch_ifsc_code),
 ]+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
