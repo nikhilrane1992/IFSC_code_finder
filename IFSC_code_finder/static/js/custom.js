@@ -17,6 +17,7 @@ angular.module("ifscCodeApp", ['ui.bootstrap', 'angular-loading-bar'])
             success(function(data, status, headers, config) {
                 console.log(data);
                 $scope.bankIfscCodeJsonObj = data.bankIfscCodeJsonObj;
+                $scope.branchNameResultList = []
                 branchNameList();
             }).
             error(function(data, status, headers, config) {

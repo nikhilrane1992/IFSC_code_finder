@@ -13,13 +13,13 @@
   <div style="margin:0px; padding: 25px 0px 25px 0px;">
   </div>
   <div class="container-fluid" style="background-color:#e6e7e8;">
-    <div class="row" style="padding: 30px 0px 30px 0px;">
+    <div class="row" style="padding: 30px 0px 30px 0px; margin:0px;">
       <div class="col-md-6" style="padding:0px 50px;">
         <div class="form-group">
           <label>Bank Name</label>
           <input type="text" class="form-control" ng-model="inputBankName">
           <div style="overflow-y: scroll; height:100px;" ng-show="inputBankName.length > 0">
-            <p ng-repeat="bankName in bankNameFileList | filter: inputBankName" style="cursor:pointer; margin-bottom:0px; padding:5px;" ng-class={evenClass:$even,oddClass:$odd} ng-click="getBranchName(bankName)">{{bankName.split('.')[0 ]}}
+            <p ng-repeat="bankName in bankNameFileList | filter: inputBankName" style="cursor:pointer; margin-bottom:0px; padding:5px; text-transform:capitalize;" ng-class={evenClass:$even,oddClass:$odd} ng-click="getBranchName(bankName)">{{bankName.split('.')[0 ]}}
             </p>
             </div>
           </div>
@@ -27,7 +27,7 @@
       <div class="col-md-6" style="padding: 0px 50px;">
         <label>Branch Name</label>
         <input type="text" class="form-control" ng-model="inputBranchName">
-        <div style="overflow-y: scroll; height:100px;">
+        <div style="overflow-y: scroll; height:100px;" ng-show="branchNameResultList.length > 0">
           <p ng-repeat="branchName in branchNameResultList | filter: inputBranchName" style="cursor:pointer; margin-bottom:0px; padding:5px;" ng-class={evenClass:$even,oddClass:$odd} ng-click="getBankDetail(branchName)">{{branchName}}</p>
         </div>
       </div> 
@@ -48,9 +48,9 @@
           </tr>
           <tr>
             <td style="width:30%;">{{bankDetail.BANK}}</td>
-            <td style="width:50%;">{{bankDetail.CONTACT}}</td>
-            <td style="width:10%;">{{bankDetail.IFSC}}</td>
-            <td style="width:10%;"></td>
+            <td style="width:40%;">{{bankDetail.CONTACT}}</td>
+            <td style="width:15%;">{{bankDetail.IFSC}}</td>
+            <td style="width:15%;"></td>
           </tr>
         </table>
       </div> 
