@@ -55,7 +55,7 @@ ROOT_URLCONF = 'IFSC_code_finder.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR+'html_templates'],
+        'DIRS': [BASE_DIR,'html_templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
