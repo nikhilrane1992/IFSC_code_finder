@@ -1,113 +1,62 @@
-$(document).ready(function() {
-    var listClass='list-group-item';    
-    $('#list').click(function(event){
-        event.preventDefault();
-        $('#products .item').addClass(listClass);    
-    });
-    $('#grid').click(function(event){
-        event.preventDefault();
-        $('#products .item')
-            .removeClass(listClass)
-            .addClass('grid-group-item');        
-    });
-});
-
-angular.module("movieApp", ['ui.bootstrap', 'angular-loading-bar'])
+angular.module("ifscCodeApp", ['ui.bootstrap', 'angular-loading-bar'])
 .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeSpinner = true;
   }])
-.controller("movieCtrl", function($scope,$http){
+.controller("ifscCodeCtrl", function($scope,$http){
 
-    $scope.selectedFilterList = []
+    $scope.bankNameFileList = []
+    $scope.inputBankName = ''
+    $scope.inputBranchName = ''
+    $scope.branchNameResultList = []
+    $scope.bankIfscCodeJsonObj = {}
+    $scope.bankDetail = {}
 
-    $scope.recordNotFound = '';
-
-    $scope.maxSize = 5;
-    $scope.bigTotalItems = 0;
-    $scope.bigCurrentPage = 1;
-    $scope.itemPerPage = 10;
-
-    var getMovieList = function(){
-        $http.post('/movies_by_filter/',{pageNo: $scope.bigCurrentPage, itemPerPage: $scope.itemPerPage, selectedFilterList: $scope.selectedFilterList}).
+    $scope.getBranchName = function(bankNameTxt){
+        $scope.inputBankName = bankNameTxt.split('.')[0];
+        $http.post('/get_branch_ifsc_code/',{bankName: bankNameTxt}).
             success(function(data, status, headers, config) {
-                if (data.status){
-                    console.log(data);
-                    $scope.movieList = data.movieList;
-                    $scope.bigTotalItems = data.totalEntries;
-                    $scope.bigCurrentPage = data.pageNo;
-                    console.log('Big Current Page: ' + $scope.bigCurrentPage);
-                    console.log('Big Total Items: ' + $scope.bigTotalItems);
-                    console.log('Max Size: ' + $scope.maxSize);
-                    $scope.recordNotFound = ''
-                }else{
-                    $scope.recordNotFound = data.validation;
-                    $scope.movieList = []
-                }
+                console.log(data);
+                $scope.bankIfscCodeJsonObj = data.bankIfscCodeJsonObj;
+                branchNameList();
             }).
             error(function(data, status, headers, config) {
                 console.log(data);
             });
     }
 
+    $scope.getBankDetail = function(branchNameTxt){
+        $scope.inputBranchName = branchNameTxt;
+        angular.forEach($scope.bankIfscCodeJsonObj, function(value, key){
+            if (key==branchNameTxt){
+                $scope.bankDetail = value;
+            }
+        });
+        console.log($scope.bankDetail);
+    }
 
-    $scope.pageChanged = function(page) {
-        console.log('Page: ' + page);
-        console.log('Big Current Page: ' + $scope.bigCurrentPage);
-        console.log('Big Total Items: ' + $scope.bigTotalItems);
-        console.log('Max Size: ' + $scope.maxSize);
-        $scope.bigCurrentPage = page;
-        getMovieList();
-    };
-
-    var searchFilter = function(){
-        $http({method: 'GET', url: '/filter/list/'})
-            .then(function successCallback(response) {
-                $scope.genreList = response.data.genreList;
-                $scope.languageList = response.data.languageList;
-                $scope.sortByList = response.data.sortByList;
-            }, function errorCallback(response) {
-               
+    var getBankNameList = function(){
+        $http.get('/serve_bank_names/').
+            success(function(data, status, headers, config) {
+                console.log(data);
+                $scope.bankNameFileList = data.bankNameFileList;
+            }).
+            error(function(data, status, headers, config) {
+                console.log(data);
             });
     }
 
+    var branchNameList = function(){
+        angular.forEach($scope.bankIfscCodeJsonObj, function(value, key){
+            $scope.branchNameResultList.push(key);
+        });
+    }
+
+
     var init = function(){
-        searchFilter();
-        getMovieList();
+        getBankNameList();
     }
     init();
 
-    $scope.clearFilter = function(){
-        for(var i=0; i < $scope.genreList.length; i++){
-            $scope.genreList[i].isSelected = false;
-        }
-        for(var i=0; i < $scope.languageList.length; i++){
-            $scope.languageList[i].isSelected = false;
-        }
-        for(var i=0; i < $scope.sortByList.length; i++){
-            $scope.sortByList[i].isSelected = false;
-        }
-        $scope.selectedFilterList = []
-        getMovieList();
-    }
-
-    $scope.clickFilter = function(obj){
-        $scope.bigCurrentPage = 1;
-        obj.isSelected=!obj.isSelected;
-        console.log(obj.isSelected)
-        if (obj.isSelected){
-            $scope.selectedFilterList.push(obj);
-            console.log($scope.selectedFilterList)
-            getMovieList();
-        }else{
-            var index = $scope.selectedFilterList.indexOf(obj);
-            $scope.selectedFilterList.splice(index, 1);     
-            // $scope.selectedFilterList.pop(obj);
-            console.log($scope.selectedFilterList)
-            getMovieList();
-        }
-    }
-        
-
-
+    
 });
 
