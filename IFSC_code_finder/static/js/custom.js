@@ -27,8 +27,11 @@ angular.module("ifscCodeApp", ['ui.bootstrap', 'angular-loading-bar'])
 
     $scope.getBankDetail = function(branchNameTxt){
         $scope.inputBranchName = branchNameTxt;
+    }
+
+    $scope.generateCode = function(){
         angular.forEach($scope.bankIfscCodeJsonObj, function(value, key){
-            if (key==branchNameTxt){
+            if (key==$scope.inputBranchName){
                 $scope.bankDetail = value;
             }
         });

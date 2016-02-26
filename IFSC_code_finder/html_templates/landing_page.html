@@ -33,7 +33,7 @@
       </div> 
       <div class="row">
         <div class="col-md-12">
-          <button class="btn btn-primary center-block">GENERATE CODE</button>
+          <button class="btn btn-primary center-block" style="padding:10px;" ng-click="generateCode()">GENERATE CODE</button>
         </div> 
       </div>
     </div>
@@ -46,11 +46,11 @@
             <th>IFSC</th>
             <th>Source</th>
           </tr>
-          <tr>
+          <tr style="background-color:#fff;" ng-show="bankDetail.BANK">
             <td style="width:30%;">{{bankDetail.BANK}}</td>
             <td style="width:40%;">{{bankDetail.CONTACT}}</td>
             <td style="width:15%;">{{bankDetail.IFSC}}</td>
-            <td style="width:15%;"></td>
+            <td style="width:15%;">----</td>
           </tr>
         </table>
       </div> 
